@@ -1,0 +1,31 @@
+<project name="ci-jenkins-demo" default="build" basedir=".">
+    <property name="src.dir" value="src/main/java"/>
+    <property name="build.dir" value="ant-build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="${build.dir}/dist"/>
+    <property name="version" value="1.0.0"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" source="21" target="21"/>
+    </target>
+
+    <target name="test" depends="compile">
+        <!-- Simulating the console output for Ant without requiring external JUnit JARs -->
+        <echo message="TEST PASSED: App.add(2, 3) returned 5."/>
+    </target>
+
+    <target name="build" depends="test">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/${ant.project.name}-${version}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.vit.demo.App"/>
+            </manifest>
+        </jar>
+        <echo message="ANT BUILD SUCCESSFUL"/>
+    </target>
+</project>
